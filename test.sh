@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+# Rating variables
+MISTAKES_COUNTER=0
+SUCC_ANSWERS=0
+WRONG_ANSWERS=0
+
+succ_counters()
+{
+  let "MISTAKES_COUNTER=MISTAKES_COUNTER+1"
+  let "SUCC_ANSWERS=SUCC_ANSWERS+1"
+}
+
+err_counters()
+{
+  let "MISTAKES_COUNTER=MISTAKES_COUNTER-1"
+  let "WRONG_ANSWERS=WRONG_ANSWERS+1"
+}
+
+# Block with ckecks
+# Check right uid and git is settuped
+echo "### Checking user UID and GID. ###"
+UID_R=$(ssh Pavel_Heraska@192.168.56.100 id -u Pavel_Heraska)
+GID_R=$(ssh Pavel_Heraska@192.168.56.100 id -g Pavel_Heraska)
+if [[ $UID_R == 500 && $GID_R == 500 ]]; then
+  echo "RESPONCE  -->  UID: $UID_R. GID: $GID_R. - OK!";
+  succ_counters
+else
+  echo "RESPONCE  -->  Something goes wrong. Check ID's. UID: $UID_R. GID: $GID_R. - FAIL!"
+  err_counters
+fi
+
+# Check connection to remote host.
+echo "### Checking ssh connection to VM. ###"
+RESPONCE_CODE=$(ssh -T Pavel_Heraska@192.168.56.100 echo $?)
+if [[ $RESPONCE_CODE == 0 ]]; then
+  echo "RESPONCE  -->  Conncetion established. - OK!"
+  succ_counters
+else
+  echo "RESPONCE  -->  Something goes wrong. - FAIL!"
+  err_counters
+fi
+
+
+# Check directories permissions
+echo "### Check permissions on directory. ###"
+PERMS=$(ssh Pavel_Heraska@192.168.56.100 stat /apps/mongodb/ | sed -n '/^Access: (/{s/Access: (\([0-9]\+\).*$/\1/;p}')
+if [[ $PERMS == 0700 ]]; then
+  echo "RESPONCE  --> Permissions: $PERMS. - OK!"
+  succ_counters
+else
+  echo "RESPONCE  -->  Something goes wrong. Permissions: $PERMS. - FAIL!"
+  err_counters
+fi
+
+echo "Total rating: $MISTAKES_COUNTER. Mistakes: $WRONG_ANSWERS. Correct answers: $SUCC_ANSWERS."
