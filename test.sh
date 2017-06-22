@@ -66,12 +66,18 @@ else
   err_counters
 fi
 
+# Check is directory /apps/mongo exists.
+if [ -d "/apps/mongo/" ]; then
+  echo "RESPONCE  -->  Directory /apps/mongo exists. - OK!";
+  succ_counters
+else
+  echo "RESPONCE  -->  Directory /apps/mongo doesn't exists. - FAIL!"
+  err_counters
+fi
 
 
 
 
-#
-#
 #
 ## Check directories permissions
 #echo "### Check permissions on directory. ###"
