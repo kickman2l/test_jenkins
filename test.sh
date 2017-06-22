@@ -19,6 +19,21 @@ err_counters()
   let "WRONG_ANSWERS=WRONG_ANSWERS+1"
 }
 
+check_directory()
+{
+    DIR_PAHT_CHK=$1
+    # Check is directory /apps/mongo exists.
+    echo "### Checking is directory ${DIR_PAHT_CHK} exists. ###"
+    if (ssh root@${IP_ADDR_VM} '[ -d ${DIR_PAHT_CHK} ]'); then
+      echo "RESPONCE  -->  Directory ${DIR_PAHT_CHK} exists. - OK!";
+      succ_counters
+    else
+      echo "RESPONCE  -->  Directory ${DIR_PAHT_CHK} doesn't exists. - FAIL!"
+      err_counters
+    fi
+
+}
+
 # Block with ckecks
 # Check right uid and git is settuped
 echo "### Checking user UID and GID. ${STUDENT_NAME} ###"
@@ -66,15 +81,9 @@ else
   err_counters
 fi
 
-# Check is directory /apps/mongo exists.
-echo "### Checking is directory /apps/mongo exists. ###"
-if (ssh root@${IP_ADDR_VM} '[ -d /apps/mongo ]'); then
-  echo "RESPONCE  -->  Directory /apps/mongo exists. - OK!";
-  succ_counters
-else
-  echo "RESPONCE  -->  Directory /apps/mongo doesn't exists. - FAIL!"
-  err_counters
-fi
+check_directory "/apps/mongo"
+
+
 #
 
 
