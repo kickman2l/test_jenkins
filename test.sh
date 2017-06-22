@@ -56,7 +56,7 @@ else
 fi
 
 # Check right git staff group
-echo "### Checking group GID. ###"
+echo "### Checking staff group GID. ###"
 GID_R=$(ssh root@${IP_ADDR_VM} getent group staff | awk -F: '{print $3}')
 if [[ $GID_R == 600 ]]; then
   echo "RESPONCE  -->  GID: $GID_R. - OK!";
