@@ -5,6 +5,8 @@ MISTAKES_COUNTER=0
 SUCC_ANSWERS=0
 WRONG_ANSWERS=0
 
+STUDENT_NAME=$1
+IP_ADDR_VM=192.168.56.100
 succ_counters()
 {
   let "MISTAKES_COUNTER=MISTAKES_COUNTER+1"
@@ -20,8 +22,8 @@ err_counters()
 # Block with ckecks
 # Check right uid and git is settuped
 echo "### Checking user UID and GID. ###"
-UID_R=$(ssh Pavel_Heraska@192.168.56.100 id -u Pavel_Heraska)
-GID_R=$(ssh Pavel_Heraska@192.168.56.100 id -g Pavel_Heraska)
+UID_R=$(ssh root@${IP_ADDR_VM} id -u ${STUDENT_NAME})
+GID_R=$(ssh root@${IP_ADDR_VM} id -g ${STUDENT_NAME})
 if [[ $UID_R == 500 && $GID_R == 500 ]]; then
   echo "RESPONCE  -->  UID: $UID_R. GID: $GID_R. - OK!";
   succ_counters
@@ -32,7 +34,7 @@ fi
 
 # Check connection to remote host.
 echo "### Checking ssh connection to VM. ###"
-RESPONCE_CODE=$(ssh -T Pavel_Heraska@192.168.56.100 echo $?)
+RESPONCE_CODE=$(ssh -T root@${STUDENT_NAME} echo $?)
 if [[ $RESPONCE_CODE == 0 ]]; then
   echo "RESPONCE  -->  Conncetion established. - OK!"
   succ_counters
@@ -44,7 +46,7 @@ fi
 
 # Check directories permissions
 echo "### Check permissions on directory. ###"
-PERMS=$(ssh Pavel_Heraska@192.168.56.100 stat /apps/mongodb/ | sed -n '/^Access: (/{s/Access: (\([0-9]\+\).*$/\1/;p}')
+PERMS=$(ssh root@${STUDENT_NAME} stat /apps/mongodb/ | sed -n '/^Access: (/{s/Access: (\([0-9]\+\).*$/\1/;p}')
 if [[ $PERMS == 0700 ]]; then
   echo "RESPONCE  --> Permissions: $PERMS. - OK!"
   succ_counters
