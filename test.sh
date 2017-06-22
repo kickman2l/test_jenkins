@@ -67,7 +67,7 @@ else
 fi
 
 # Check is directory /apps/mongo exists.
-if [ -d "/apps/mongo/" ]; then
+if [ -d /apps/mongo/ ]; then
   echo "RESPONCE  -->  Directory /apps/mongo exists. - OK!";
   succ_counters
 else
