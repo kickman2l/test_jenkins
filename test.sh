@@ -55,9 +55,9 @@ else
   err_counters
 fi
 
-# Check right uid and git mongo user
-echo "### Checking user UID and GID. ###"
-GID_R=$(ssh root@${IP_ADDR_VM} id -g staff)
+# Check right git staff group
+echo "### Checking group GID. ###"
+GID_R=$(ssh root@${IP_ADDR_VM} getent group staff | awk -F: '{print $3}')
 if [[ $GID_R == 600 ]]; then
   echo "RESPONCE  -->  GID: $GID_R. - OK!";
   succ_counters
