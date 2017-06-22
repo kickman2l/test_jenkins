@@ -33,15 +33,16 @@ else
 fi
 
 # Check connection to remote host.
-#echo "### Checking ssh connection to VM. ###"
-#RESPONCE_CODE=$(ssh -T root@${IP_ADDR_VM} echo $?)
-#if [[ $RESPONCE_CODE == 0 ]]; then
-#  echo "RESPONCE  -->  Conncetion established. - OK!"
-#  succ_counters
-#else
-#  echo "RESPONCE  -->  Something goes wrong. - FAIL!"
-#  err_counters
-#fi
+echo "### Checking ssh connection to VM. ###"
+RESPONCE_CODE=$(ssh -T root@${IP_ADDR_VM} echo $?)
+if [[ $RESPONCE_CODE == 0 ]]; then
+  echo "RESPONCE  -->  Conncetion established. - OK!"
+  succ_counters
+else
+  echo "RESPONCE  -->  Something goes wrong. - FAIL!"
+  err_counters
+fi
+
 #
 ## Check right uid and git mongo user
 #echo "### Checking user UID and GID. ###"
