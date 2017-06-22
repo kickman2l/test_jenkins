@@ -68,7 +68,7 @@ fi
 
 # Check is directory /apps/mongo exists.
 echo "### Checking is directory /apps/mongo exists. ###"
-if [ ssh root@${IP_ADDR_VM} '[ -d /apps/mongo/ ]' ]; then
+if (ssh root@${IP_ADDR_VM} '[ -d /apps/mongo ]'); then
   echo "RESPONCE  -->  Directory /apps/mongo exists. - OK!";
   succ_counters
 else
