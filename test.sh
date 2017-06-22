@@ -114,7 +114,7 @@ else
 fi
 
 check_directory "/apps/mongo/" 0700
-check_directory "apps/mongodb/" 0700
+check_directory "/apps/mongodb/" 0700
 check_directory "/logs/mongo/" 0700
 
 
