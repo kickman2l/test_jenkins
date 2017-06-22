@@ -22,6 +22,7 @@ err_counters()
 check_directory()
 {
     DIR_PAHT_CHK=$1
+    CHK_PERMS=$2
     # Check is directory .
     echo "### Checking directory ${DIR_PAHT_CHK} settings. ###"
     if (ssh root@${IP_ADDR_VM} '[ -d ${DIR_PAHT_CHK} ]'); then
@@ -51,6 +52,16 @@ check_directory()
     else
         echo "RESPONCE  -->  Something goes wrong. Directory group ${GRP_DIR}. - FAIL!"
         err_counters
+    fi
+
+    # Check directory equals
+    PERMS=$(ssh root@${IP_ADDR_VM} stat ${DIR_PAHT_CHK} | sed -n '/^Access: (/{s/Access: (\([0-9]\+\).*$/\1/;p}')
+    if [[ $PERMS == $CHK_PERMS ]]; then
+      echo "RESPONCE  --> Permissions: $PERMS. - OK!"
+      succ_counters
+    else
+      echo "RESPONCE  -->  Something goes wrong. Permissions: $PERMS. - FAIL!"
+      err_counters
     fi
 
 }
@@ -102,7 +113,9 @@ else
   err_counters
 fi
 
-check_directory "/apps/mongo"
+check_directory "/apps/mongo" 0700
+check_directory "apps/mongodb/" 0700
+check_directory "/logs/mongo/" 0700
 
 
 #
@@ -111,15 +124,7 @@ check_directory "/apps/mongo"
 #
 #
 ## Check directories permissions
-#echo "### Check permissions on directory. ###"
-#PERMS=$(ssh root@${IP_ADDR_VM} stat /apps/mongodb/ | sed -n '/^Access: (/{s/Access: (\([0-9]\+\).*$/\1/;p}')
-#if [[ $PERMS == 0700 ]]; then
-#  echo "RESPONCE  --> Permissions: $PERMS. - OK!"
-#  succ_counters
-#else
-#  echo "RESPONCE  -->  Something goes wrong. Permissions: $PERMS. - FAIL!"
-#  err_counters
-#fi
+
 
 
 
