@@ -47,14 +47,29 @@ fi
 # Check right uid and git mongo user
 echo "### Checking user UID and GID. ###"
 UID_R=$(ssh root@${IP_ADDR_VM} id -u mongo)
-GID_R=$(ssh root@${IP_ADDR_VM} id -g mongo)
-if [[ $UID_R == 600 && $GID_R == 600 ]]; then
-  echo "RESPONCE  -->  UID: $UID_R. GID: $GID_R. - OK!";
+if [[ $UID_R == 600 ]]; then
+  echo "RESPONCE  -->  UID: $UID_R. - OK!";
   succ_counters
 else
-  echo "RESPONCE  -->  Something goes wrong. Check ID's. UID: $UID_R. GID: $GID_R. - FAIL!"
+  echo "RESPONCE  -->  Something goes wrong. Check ID's. UID: $UID_R. - FAIL!"
   err_counters
 fi
+
+# Check right uid and git mongo user
+echo "### Checking user UID and GID. ###"
+GID_R=$(ssh root@${IP_ADDR_VM} id -g staff)
+if [[ $GID_R == 600 ]]; then
+  echo "RESPONCE  -->  GID: $GID_R. - OK!";
+  succ_counters
+else
+  echo "RESPONCE  -->  Something goes wrong. Check ID's. GID: $GID_R. - FAIL!"
+  err_counters
+fi
+
+
+
+
+
 #
 #
 #
