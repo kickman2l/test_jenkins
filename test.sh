@@ -34,8 +34,8 @@ check_directory()
     fi
 
     # Check owner is mongo
-    USR_DIR=$(ssh root@${IP_ADDR_VM} ls -ld /apps/mongo | awk '{print $3}')
-    GRP_DIR=$(ssh root@${IP_ADDR_VM} ls -ld /apps/mongo | awk '{print $4}')
+    USR_DIR=$(ssh root@${IP_ADDR_VM} ls -ld ${DIR_PAHT_CHK} | awk '{print $3}')
+    GRP_DIR=$(ssh root@${IP_ADDR_VM} ls -ld ${DIR_PAHT_CHK} | awk '{print $4}')
 
     if [[ $USR_DIR == "mongo" ]]; then
         echo "RESPONCE  -->  Directory owner: ${USR_DIR}. - OK!";
@@ -113,7 +113,7 @@ else
   err_counters
 fi
 
-check_directory "/apps/mongo" 0700
+check_directory "/apps/mongo/" 0700
 check_directory "apps/mongodb/" 0700
 check_directory "/logs/mongo/" 0700
 
