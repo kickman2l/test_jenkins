@@ -32,6 +32,18 @@ check_directory()
       err_counters
     fi
 
+    # Check owner is mongo:staff
+    USR_DIR=$(ssh root@${IP_ADDR_VM} ls -ld /apps/mongo | awk '{print $3}')
+    GRP_DIR=$(ssh root@${IP_ADDR_VM} ls -ld /apps/mongo | awk '{print $4}')
+
+    if [[ $USR_DIR == "mongo" ]]; then
+        echo "RESPONCE  -->  Directory owner: ${USR_DIR}. - OK!";
+        succ_counters
+    else
+        echo "RESPONCE  -->  Something goes wrong. Directory owner ${USR_DIR}. - FAIL!"
+        err_counters
+    fi
+
 }
 
 # Block with ckecks
