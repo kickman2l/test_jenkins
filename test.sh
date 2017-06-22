@@ -21,7 +21,7 @@ err_counters()
 
 # Block with ckecks
 # Check right uid and git is settuped
-echo "### Checking user UID and GID. ###"
+echo "### Checking user UID and GID. ${STUDENT_NAME} ###"
 UID_R=$(ssh root@${IP_ADDR_VM} id -u ${STUDENT_NAME})
 GID_R=$(ssh root@${IP_ADDR_VM} id -g ${STUDENT_NAME})
 if [[ $UID_R == 500 && $GID_R == 500 ]]; then
@@ -45,7 +45,7 @@ fi
 
 
 # Check right uid and git mongo user
-echo "### Checking user UID and GID. ###"
+echo "### Checking user UID mongo. ###"
 UID_R=$(ssh root@${IP_ADDR_VM} id -u mongo)
 if [[ $UID_R == 600 ]]; then
   echo "RESPONCE  -->  UID: $UID_R. - OK!";
