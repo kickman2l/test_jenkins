@@ -34,7 +34,7 @@ fi
 
 # Check connection to remote host.
 echo "### Checking ssh connection to VM. ###"
-RESPONCE_CODE=$(ssh -T root@${STUDENT_NAME} echo $?)
+RESPONCE_CODE=$(ssh -T root@${IP_ADDR_VM} echo $?)
 if [[ $RESPONCE_CODE == 0 ]]; then
   echo "RESPONCE  -->  Conncetion established. - OK!"
   succ_counters
@@ -59,7 +59,7 @@ fi
 
 # Check directories permissions
 echo "### Check permissions on directory. ###"
-PERMS=$(ssh root@${STUDENT_NAME} stat /apps/mongodb/ | sed -n '/^Access: (/{s/Access: (\([0-9]\+\).*$/\1/;p}')
+PERMS=$(ssh root@${IP_ADDR_VM} stat /apps/mongodb/ | sed -n '/^Access: (/{s/Access: (\([0-9]\+\).*$/\1/;p}')
 if [[ $PERMS == 0700 ]]; then
   echo "RESPONCE  --> Permissions: $PERMS. - OK!"
   succ_counters
