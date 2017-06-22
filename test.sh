@@ -22,8 +22,8 @@ err_counters()
 check_directory()
 {
     DIR_PAHT_CHK=$1
-    # Check is directory /apps/mongo exists.
-    echo "### Checking is directory ${DIR_PAHT_CHK} exists. ###"
+    # Check is directory .
+    echo "### Checking directory ${DIR_PAHT_CHK} settings. ###"
     if (ssh root@${IP_ADDR_VM} '[ -d ${DIR_PAHT_CHK} ]'); then
       echo "RESPONCE  -->  Directory ${DIR_PAHT_CHK} exists. - OK!";
       succ_counters
@@ -32,7 +32,7 @@ check_directory()
       err_counters
     fi
 
-    # Check owner is mongo:staff
+    # Check owner is mongo
     USR_DIR=$(ssh root@${IP_ADDR_VM} ls -ld /apps/mongo | awk '{print $3}')
     GRP_DIR=$(ssh root@${IP_ADDR_VM} ls -ld /apps/mongo | awk '{print $4}')
 
@@ -41,6 +41,15 @@ check_directory()
         succ_counters
     else
         echo "RESPONCE  -->  Something goes wrong. Directory owner ${USR_DIR}. - FAIL!"
+        err_counters
+    fi
+
+    # Check group is mongo
+    if [[ $GRP_DIR == "staff" ]]; then
+        echo "RESPONCE  -->  Directory group: ${GRP_DIR}. - OK!";
+        succ_counters
+    else
+        echo "RESPONCE  -->  Something goes wrong. Directory group ${GRP_DIR}. - FAIL!"
         err_counters
     fi
 
