@@ -74,10 +74,10 @@ else
   echo "RESPONCE  -->  Directory /apps/mongo doesn't exists. - FAIL!"
   err_counters
 fi
+#
 
 
-
-
+#
 #
 ## Check directories permissions
 #echo "### Check permissions on directory. ###"
