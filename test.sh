@@ -7,6 +7,8 @@ WRONG_ANSWERS=0
 
 STUDENT_NAME=$1
 IP_ADDR_VM=192.168.56.100
+
+
 succ_counters()
 {
   let "MISTAKES_COUNTER=MISTAKES_COUNTER+1"
@@ -116,14 +118,6 @@ fi
 check_directory "/apps/mongo/" 0700
 check_directory "/apps/mongodb/" 0700
 check_directory "/logs/mongo/" 0700
-
-
-#
-
-
-#
-#
-## Check directories permissions
 
 
 
