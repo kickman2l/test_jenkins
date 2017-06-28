@@ -182,7 +182,7 @@ else
   exit 1
 fi
 
-echo "### Checking mongodb PID is exists. ###"
+echo "### Checking mongodb port status. ###"
 PORT_STATE=$(ssh root@${IP_ADDR_VM} netstat -tulnap | grep mongo | awk {'print $6'})
 if [[ $PORT_STATE == "LISTEN" ]]; then
   echo "RESPONCE  -->  Mongo port state is: $PORT_STATE. - OK!";
@@ -193,10 +193,15 @@ else
   exit 1
 fi
 
-
-
-
-
+echo "### Checking init script is exists. ###"
+if (ssh root@${IP_ADDR_VM} '[ -f /etc/init.d/mongo ]'); then
+  echo "RESPONCE  -->  Init script exists. - OK!";
+  succ_counters
+else
+  echo "RESPONCE  -->  Something goes wrong script not found. - FAIL!"
+  err_counters
+  exit 1
+fi
 
 echo "Total rating: $MISTAKES_COUNTER. Mistakes: $WRONG_ANSWERS. Correct answers: $SUCC_ANSWERS."
 
