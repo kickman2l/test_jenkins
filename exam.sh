@@ -127,8 +127,8 @@ check_directory "/apps/mongo/" 0700
 check_directory "/apps/mongodb/" 0700
 check_directory "/logs/mongo/" 0700
 
-echo "### Checking PATH bash_rc. ###"
-MONGO_BASHRC=$(ssh root@${IP_ADDR_VM} cat /home/mongo1/.bashrc | grep mongo)
+echo "### Checking PATH bashrc. ###"
+MONGO_BASHRC=$(ssh root@${IP_ADDR_VM} cat /home/mongo/.bashrc | grep mongo)
 if [[ $MONGO_BASHRC != "" ]]; then
   echo "RESPONCE  -->  .bashrc path: $MONGO_BASHRC. - OK!";
   succ_counters
@@ -138,6 +138,16 @@ else
   exit 1
 fi
 
+echo "### Checking PATH bash_profile. ###"
+MONGO_BASHPROFILE=$(ssh root@${IP_ADDR_VM} cat /home/mongo/.bash_profile | grep mongo)
+if [[ $MONGO_BASHPROFILE != "" ]]; then
+  echo "RESPONCE  -->  .bashrc path: $MONGO_BASHPROFILE. - OK!";
+  succ_counters
+else
+  echo "RESPONCE  -->  Something goes wrong. Check .bashrc file. No Path. - FAIL!"
+  err_counters
+  exit 1
+fi
 
 
 
