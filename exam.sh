@@ -123,10 +123,12 @@ else
   exit 1
 fi
 
+# Check permissions on directories
 check_directory "/apps/mongo/" 0700
 check_directory "/apps/mongodb/" 0700
 check_directory "/logs/mongo/" 0700
 
+# Check $PATH mongo user
 echo "### Checking PATH bashrc. ###"
 MONGO_BASHRC=$(ssh root@${IP_ADDR_VM} cat /home/mongo/.bashrc | grep mongo)
 if [[ $MONGO_BASHRC != "" ]]; then
@@ -138,6 +140,7 @@ else
   exit 1
 fi
 
+# Check $PATH mongo user
 echo "### Checking PATH bash_profile. ###"
 MONGO_BASHPROFILE=$(ssh root@${IP_ADDR_VM} cat /home/mongo/.bash_profile | grep mongo)
 if [[ $MONGO_BASHPROFILE != "" ]]; then
@@ -149,6 +152,7 @@ else
   exit 1
 fi
 
+# Check process number mongo user
 echo "### Checking allowed process number. ###"
 ALLOWED_PROC=$(ssh root@${IP_ADDR_VM} "su mongo -c 'ulimit -u'")
 if [[ $ALLOWED_PROC == 32000 ]]; then
@@ -160,6 +164,7 @@ else
   exit 1
 fi
 
+# Check selinux state
 echo "### Checking selinux config file. ###"
 SELINUX_STATE=$(ssh root@${IP_ADDR_VM} cat /etc/selinux/config | grep SELINUX=.*disabled*. | awk -F= {'print $2'})
 if [[ $SELINUX_STATE == "disabled" ]]; then
@@ -171,6 +176,7 @@ else
   exit 1
 fi
 
+# Checking PID is exists.
 echo "### Checking mongodb PID is exists. ###"
 PID_MONGO=$(ssh root@${IP_ADDR_VM} ps -ef | grep mongo)
 if [[ $PID_MONGO != "" ]]; then
@@ -182,6 +188,7 @@ else
   exit 1
 fi
 
+# Checking port state
 echo "### Checking mongodb port status. ###"
 PORT_STATE=$(ssh root@${IP_ADDR_VM} netstat -tulnap | grep mongo | awk {'print $6'})
 if [[ $PORT_STATE == "LISTEN" ]]; then
@@ -193,6 +200,7 @@ else
   exit 1
 fi
 
+# Checking init script exists
 echo "### Checking init script is exists. ###"
 if (ssh root@${IP_ADDR_VM} '[ -f /etc/init.d/mongo ]'); then
   echo "RESPONCE  -->  Init script exists. - OK!";
