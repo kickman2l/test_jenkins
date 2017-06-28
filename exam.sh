@@ -144,10 +144,23 @@ if [[ $MONGO_BASHPROFILE != "" ]]; then
   echo "RESPONCE  -->  .bashrc path: $MONGO_BASHPROFILE. - OK!";
   succ_counters
 else
-  echo "RESPONCE  -->  Something goes wrong. Check .bashrc file. No Path. - FAIL!"
+  echo "RESPONCE  -->  Something goes wrong. Check .bash_profile file. No Path. - FAIL!"
   err_counters
   exit 1
 fi
+
+echo "### Checking PATH bash_profile. ###"
+ALLOWED_PROC=$(ssh root@${IP_ADDR_VM} su mongo -c "ulimit -u")
+if [[ $ALLOWED_PROC == 32000 ]]; then
+  echo "RESPONCE  -->  Allowed processes number: $ALLOWED_PROC. - OK!";
+  succ_counters
+else
+  echo "RESPONCE  -->  Something goes wrong. Check settings. Allowed processes: $ALLOWED_PROC. - FAIL!"
+  err_counters
+  exit 1
+fi
+
+
 
 
 
