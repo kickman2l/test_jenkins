@@ -149,7 +149,7 @@ else
   exit 1
 fi
 
-echo "### Checking PATH bash_profile. ###"
+echo "### Checking allowed process number. ###"
 ALLOWED_PROC=$(ssh root@${IP_ADDR_VM} "su mongo -c 'ulimit -u'")
 if [[ $ALLOWED_PROC == 32000 ]]; then
   echo "RESPONCE  -->  Allowed processes number: $ALLOWED_PROC. - OK!";
@@ -160,9 +160,16 @@ else
   exit 1
 fi
 
-
-
-
+echo "### Checking sudoers file. ###"
+SUDOERS=$(ssh root@${IP_ADDR_VM} cat /etc/sudoers | grep Pavel_Heraska.*.ALL.*.mongo)
+if [[ $SUDOERS != "" ]]; then
+  echo "RESPONCE  -->  User in sudoers file. - OK!";
+  succ_counters
+else
+  echo "RESPONCE  -->  Something goes wrong. Check sudoers file. - FAIL!"
+  err_counters
+  exit 1
+fi
 
 echo "Total rating: $MISTAKES_COUNTER. Mistakes: $WRONG_ANSWERS. Correct answers: $SUCC_ANSWERS."
 
