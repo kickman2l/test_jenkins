@@ -171,6 +171,33 @@ else
   exit 1
 fi
 
+echo "### Checking mongodb PID is exists. ###"
+PID_MONGO=$(ssh root@${IP_ADDR_VM} ps -ef | grep mongo)
+if [[ $PID_MONGO != "" ]]; then
+  echo "RESPONCE  -->  PID is exists: - OK!";
+  succ_counters
+else
+  echo "RESPONCE  -->  Something goes wrong. No PID was found. - FAIL!"
+  err_counters
+  exit 1
+fi
+
+echo "### Checking mongodb PID is exists. ###"
+PORT_STATE=$(ssh root@${IP_ADDR_VM} netstat -tulnap | grep mongo | awk {'print $6'})
+if [[ $PORT_STATE == "LISTEN" ]]; then
+  echo "RESPONCE  -->  Mongo port state is: $PORT_STATE. - OK!";
+  succ_counters
+else
+  echo "RESPONCE  -->  Something goes wrong. Port state: $PORT_STATE. - FAIL!"
+  err_counters
+  exit 1
+fi
+
+
+
+
+
+
 echo "Total rating: $MISTAKES_COUNTER. Mistakes: $WRONG_ANSWERS. Correct answers: $SUCC_ANSWERS."
 
 exit 0
