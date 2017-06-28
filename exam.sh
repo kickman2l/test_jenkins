@@ -150,7 +150,7 @@ else
 fi
 
 echo "### Checking PATH bash_profile. ###"
-ALLOWED_PROC=$(ssh root@${IP_ADDR_VM} su mongo -c "ulimit -u")
+ALLOWED_PROC=$(ssh root@${IP_ADDR_VM} ssh root@192.168.56.100 "su mongo -c 'ulimit -u'")
 if [[ $ALLOWED_PROC == 32000 ]]; then
   echo "RESPONCE  -->  Allowed processes number: $ALLOWED_PROC. - OK!";
   succ_counters
