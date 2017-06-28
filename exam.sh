@@ -128,7 +128,7 @@ check_directory "/apps/mongodb/" 0700
 check_directory "/logs/mongo/" 0700
 
 echo "### Checking PATH bash_rc. ###"
-MONGO_BASHRC=$(ssh root@${IP_ADDR_VM} cat /home/mongo/.bashrc | grep mongo)
+MONGO_BASHRC=$(ssh root@${IP_ADDR_VM} cat /home/mongo1/.bashrc | grep mongo)
 if [[ $MONGO_BASHRC != "" ]]; then
   echo "RESPONCE  -->  .bashrc path: $MONGO_BASHRC. - OK!";
   succ_counters
