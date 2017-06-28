@@ -33,6 +33,7 @@ check_directory()
     else
       echo "RESPONCE  -->  Directory ${DIR_PAHT_CHK} doesn't exists. - FAIL!"
       err_counters
+      exit 1
     fi
 
     # Check owner is mongo
@@ -45,6 +46,7 @@ check_directory()
     else
         echo "RESPONCE  -->  Something goes wrong. Directory owner ${USR_DIR}. - FAIL!"
         err_counters
+        exit 1
     fi
 
     # Check group is mongo
@@ -54,6 +56,7 @@ check_directory()
     else
         echo "RESPONCE  -->  Something goes wrong. Directory group ${GRP_DIR}. - FAIL!"
         err_counters
+        exit 1
     fi
 
     # Check directory equals
@@ -64,6 +67,7 @@ check_directory()
     else
       echo "RESPONCE  -->  Something goes wrong. Permissions: $PERMS. - FAIL!"
       err_counters
+      exit 1
     fi
 
 }
@@ -79,6 +83,7 @@ if [[ $UID_R == 500 && $GID_R == 500 ]]; then
 else
   echo "RESPONCE  -->  Something goes wrong. Check ID's. UID: $UID_R. GID: $GID_R. - FAIL!"
   err_counters
+  exit 1
 fi
 
 # Check connection to remote host.
@@ -90,6 +95,7 @@ if [[ $RESPONCE_CODE == 0 ]]; then
 else
   echo "RESPONCE  -->  Something goes wrong. - FAIL!"
   err_counters
+  exit 1
 fi
 
 
@@ -102,6 +108,7 @@ if [[ $UID_R == 600 ]]; then
 else
   echo "RESPONCE  -->  Something goes wrong. Check ID's. UID: $UID_R. - FAIL!"
   err_counters
+  exit 1
 fi
 
 # Check right git staff group
@@ -113,14 +120,27 @@ if [[ $GID_R == 600 ]]; then
 else
   echo "RESPONCE  -->  Something goes wrong. Check ID's. GID: $GID_R. - FAIL!"
   err_counters
+  exit 1
 fi
 
 check_directory "/apps/mongo/" 0700
 check_directory "/apps/mongodb/" 0700
 check_directory "/logs/mongo/" 0700
 
+echo "### Checking PATH bash_rc. ###"
+MONGO_BASHRC=$(ssh root@${IP_ADDR_VM} cat /home/mongo/.bashrc | grep mongo)
+if [[ $MONGO_BASHRC != "" ]]; then
+  echo "RESPONCE  -->  .bashrc path: $MONGO_BASHRC. - OK!";
+  succ_counters
+else
+  echo "RESPONCE  -->  Something goes wrong. Check .bashrc file. No Path. - FAIL!"
+  err_counters
+  exit 1
+fi
 
 
 
 
 echo "Total rating: $MISTAKES_COUNTER. Mistakes: $WRONG_ANSWERS. Correct answers: $SUCC_ANSWERS."
+
+exit 0
