@@ -160,13 +160,13 @@ else
   exit 1
 fi
 
-echo "### Checking sudoers file. ###"
-SUDOERS=$(ssh root@${IP_ADDR_VM} cat /etc/sudoers | grep Pavel_Heraska.*.ALL.*.mongo)
-if [[ $SUDOERS != "" ]]; then
-  echo "RESPONCE  -->  User in sudoers file. - OK!";
+echo "### Checking selinux config file. ###"
+SELINUX_STATE=$(ssh root@${IP_ADDR_VM} cat /etc/selinux/config | grep SELINUX=.*disabled*. | awk -F= {'print $2'})
+if [[ $SELINUX_STATE == "disabled" ]]; then
+  echo "RESPONCE  -->  Checking selinux state: $SELINUX_STATE - OK!";
   succ_counters
 else
-  echo "RESPONCE  -->  Something goes wrong. Check sudoers file. - FAIL!"
+  echo "RESPONCE  -->  Something goes wrong. Check selinux state: $SELINUX_STATE. - FAIL!"
   err_counters
   exit 1
 fi
